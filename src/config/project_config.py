@@ -6,7 +6,7 @@ This module provides a flexible configuration system that can adapt to different
 import yaml
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Any
 from dataclasses import dataclass, field
 import logging
 
@@ -58,7 +58,7 @@ class FortranProjectConfig:
     generate_metrics: bool = True
 
     # Visualization settings
-    visualization: Dict[str, Union[str, bool, int]] = field(
+    visualization: Dict[str, Union[str, bool, int, tuple[int, int]]] = field(
         default_factory=lambda: {
             "node_color": "lightblue",
             "edge_color": "gray",
@@ -146,7 +146,7 @@ class FortranProjectConfig:
 class ConfigurationManager:
     """Manages configuration templates for different types of Fortran projects."""
 
-    TEMPLATES = {
+    TEMPLATES: Dict[str, Dict[str, Any]] = {
         "ctsm": {
             "project_name": "CTSM",
             "source_dirs": ["src/biogeophys", "src/biogeochem", "src/main"],
@@ -217,7 +217,7 @@ class ConfigurationManager:
         return list(cls.TEMPLATES.keys())
 
     @classmethod
-    def get_template_info(cls, template_name: str) -> Dict:
+    def get_template_info(cls, template_name: str) -> Dict[str, Any]:
         """Get information about a specific template."""
         if template_name not in cls.TEMPLATES:
             raise ValueError(f"Unknown template: {template_name}")

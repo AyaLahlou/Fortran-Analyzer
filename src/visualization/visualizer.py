@@ -49,7 +49,7 @@ class FortranVisualizer:
 
     def visualize_module_dependencies(
         self, call_graph_builder: CallGraphBuilder, save_path: Optional[Path] = None
-    ) -> Path:
+    ) -> Optional[Path]:
         """Create a visualization of module dependencies."""
         module_graph = call_graph_builder.get_module_graph()
 
@@ -157,14 +157,15 @@ class FortranVisualizer:
 
     def visualize_translation_units(
         self, translation_units: List[TranslationUnit], save_path: Optional[Path] = None
-    ) -> Path:
+    ) -> Optional[Path]:
         """Create visualizations for translation units."""
         if not translation_units:
             logger.warning("No translation units to visualize")
             return None
 
         # Create subplots
-        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
+        fig, axes_array = plt.subplots(2, 2, figsize=(16, 12))  # type: ignore
+        ax1, ax2, ax3, ax4 = axes_array[0, 0], axes_array[0, 1], axes_array[1, 0], axes_array[1, 1]  # type: ignore
         fig.suptitle(
             f"{self.config.project_name} - Translation Units Analysis",
             fontsize=16,
@@ -172,11 +173,11 @@ class FortranVisualizer:
         )
 
         # 1. Units by type
-        unit_types = {}
+        unit_types: Dict[str, int] = {}
         for unit in translation_units:
             unit_types[unit.unit_type] = unit_types.get(unit.unit_type, 0) + 1
 
-        colors = plt.cm.Set3(np.linspace(0, 1, len(unit_types)))
+        colors = plt.cm.get_cmap('tab20')(np.linspace(0, 1, len(unit_types)))
         wedges, texts, autotexts = ax1.pie(
             unit_types.values(),
             labels=unit_types.keys(),
@@ -219,7 +220,7 @@ class FortranVisualizer:
             ax3.set_title("Complexity Scores (No Data)")
 
         # 4. Priority distribution
-        priorities = {}
+        priorities: Dict[int, int] = {}
         for unit in translation_units:
             priorities[unit.priority] = priorities.get(unit.priority, 0) + 1
 
@@ -271,13 +272,14 @@ class FortranVisualizer:
 
     def create_project_overview(
         self, statistics: Dict[str, Any], save_path: Optional[Path] = None
-    ) -> Path:
+    ) -> Optional[Path]:
         """Create a project overview visualization."""
         if not statistics:
             logger.warning("No statistics to visualize")
             return None
 
-        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
+        fig, axes_array = plt.subplots(2, 2, figsize=(16, 12))  # type: ignore
+        ax1, ax2, ax3, ax4 = axes_array[0, 0], axes_array[0, 1], axes_array[1, 0], axes_array[1, 1]  # type: ignore
         fig.suptitle(
             f"{self.config.project_name} - Project Overview",
             fontsize=16,
@@ -520,7 +522,7 @@ class FortranVisualizer:
 
     def create_translation_priority_chart(
         self, translation_units: List[TranslationUnit], save_path: Optional[Path] = None
-    ) -> Path:
+    ) -> Optional[Path]:
         """Create a detailed chart showing translation priority and complexity."""
         if not translation_units:
             logger.warning("No translation units to visualize")
@@ -531,7 +533,8 @@ class FortranVisualizer:
             translation_units, key=lambda u: (u.priority, u.complexity_score)
         )
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 10))
+        fig, axes_array = plt.subplots(2, 1, figsize=(14, 10))  # type: ignore
+        ax1, ax2 = axes_array[0], axes_array[1]  # type: ignore
         fig.suptitle(
             f"{self.config.project_name} - Translation Priority Analysis",
             fontsize=16,

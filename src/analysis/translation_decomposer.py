@@ -9,6 +9,12 @@ from pathlib import Path
 from dataclasses import dataclass
 import logging
 
+try:
+    import yaml
+    YAML_AVAILABLE = True
+except ImportError:
+    YAML_AVAILABLE = False
+
 from ..parser.fortran_parser import ModuleInfo, FortranEntity
 from ..config.project_config import FortranProjectConfig
 
@@ -31,11 +37,11 @@ class TranslationUnit:
 
     # Hierarchical structure
     parent_id: Optional[str] = None
-    child_ids: List[str] = None
+    child_ids: Optional[List[str]] = None
 
     # Dependencies
-    depends_on: List[str] = None
-    used_by: List[str] = None
+    depends_on: Optional[List[str]] = None
+    used_by: Optional[List[str]] = None
 
     # Content metadata
     has_interfaces: bool = False
@@ -45,7 +51,7 @@ class TranslationUnit:
     # Translation metadata
     priority: int = 0
     estimated_effort: str = "medium"  # low, medium, high
-    notes: List[str] = None
+    notes: Optional[List[str]] = None
 
     def __post_init__(self):
         if self.child_ids is None:
@@ -63,7 +69,7 @@ class TranslationUnitDecomposer:
 
     def __init__(self, config: FortranProjectConfig):
         self.config = config
-        self.translation_units = []
+        self.translation_units: List[TranslationUnit] = []
         self.unit_counter = 0
 
     def decompose_modules(
@@ -255,7 +261,7 @@ class TranslationUnitDecomposer:
         self, entity: FortranEntity, module_info: ModuleInfo, lines: List[str]
     ) -> List[TranslationUnit]:
         """Decompose a single procedure into one or more translation units."""
-        units = []
+        units: List[TranslationUnit] = []
 
         if entity.line_end <= 0:
             return units
@@ -328,7 +334,8 @@ class TranslationUnitDecomposer:
                     parent_id=root_unit_id,
                     notes=[description],
                 )
-                root_unit.child_ids.append(inner_unit_id)
+                if root_unit.child_ids is not None:
+                    root_unit.child_ids.append(inner_unit_id)
                 units.append(inner_unit)
 
         return units
@@ -337,7 +344,7 @@ class TranslationUnitDecomposer:
         self, procedure_lines: List[str], entity: FortranEntity, module_info: ModuleInfo
     ) -> List[Tuple[int, int, str]]:
         """Split a large procedure into logical chunks."""
-        chunks = []
+        chunks: List[Tuple[int, int, str]] = []
 
         # Find declaration section end
         declaration_end = self._find_declaration_end(procedure_lines)
@@ -470,7 +477,7 @@ class TranslationUnitDecomposer:
         # This is a simplified implementation
         # A more sophisticated version would analyze actual code dependencies
 
-        module_dependencies = {}
+        module_dependencies: Dict[str, List[TranslationUnit]] = {}
 
         # Group units by module
         for unit in self.translation_units:
@@ -485,8 +492,10 @@ class TranslationUnitDecomposer:
                     (u for u in self.translation_units if u.id == unit.parent_id), None
                 )
                 if parent:
-                    unit.depends_on.append(parent.id)
-                    parent.used_by.append(unit.id)
+                    if unit.depends_on is not None:
+                        unit.depends_on.append(parent.id)
+                    if parent.used_by is not None:
+                        parent.used_by.append(unit.id)
 
     def _calculate_complexity_scores(self) -> None:
         """Calculate complexity scores for translation units."""
@@ -559,7 +568,7 @@ class TranslationUnitDecomposer:
 
     def get_statistics(self) -> Dict[str, Any]:
         """Get statistics about the translation units."""
-        stats = {
+        stats: Dict[str, Any] = {
             "total_units": len(self.translation_units),
             "units_by_type": {},
             "units_by_priority": {},

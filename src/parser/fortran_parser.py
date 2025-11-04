@@ -11,6 +11,12 @@ from dataclasses import dataclass
 import logging
 
 try:
+    import yaml
+    YAML_AVAILABLE = True
+except ImportError:
+    YAML_AVAILABLE = False
+
+try:
     from fparser.two.parser import ParserFactory
     from fparser.common.readfortran import FortranFileReader
     from fparser.two.Fortran2003 import (
@@ -48,7 +54,7 @@ class FortranEntity:
     line_start: int
     line_end: int
     parent: Optional[str] = None
-    attributes: Dict[str, Any] = None
+    attributes: Optional[Dict[str, Any]] = None
 
     def __post_init__(self):
         if self.attributes is None:
@@ -61,7 +67,7 @@ class ModuleInfo:
 
     name: str
     file_path: str
-    uses: List[Dict[str, Union[str, List[str]]]]  # Dependencies
+    uses: List[Dict[str, Union[str, List[str], None]]]  # Dependencies
     subroutines: List[str]
     functions: List[str]
     types: List[str]
@@ -76,7 +82,7 @@ class FortranParser:
 
     def __init__(self, config: FortranProjectConfig):
         self.config = config
-        self.results = {
+        self.results: Dict[str, Any] = {
             "modules": {},
             "files": {},
             "dependencies": {},
@@ -171,7 +177,7 @@ class FortranParser:
         subroutines = []
         functions = []
         types = []
-        variables = []
+        variables: List[str] = []
         interfaces = []
         entities = []
 
@@ -234,8 +240,8 @@ class FortranParser:
         subroutines = []
         functions = []
         types = []
-        variables = []
-        interfaces = []
+        variables: List[str] = []
+        interfaces: List[str] = []
         entities = []
 
         # Extract module name
@@ -365,11 +371,11 @@ class FortranParser:
 
         return start_line, end_line
 
-    def _extract_use_stmt(self, use_node) -> Optional[Dict[str, Union[str, List[str]]]]:
+    def _extract_use_stmt(self, use_node) -> Optional[Dict[str, Union[str, List[str], None]]]:
         """Extract information from a USE statement."""
         try:
             module_name = str(use_node.children[1])
-            only_list = None
+            only_list: Optional[List[str]] = None
 
             if len(use_node.children) > 2 and use_node.children[2]:
                 # Has ONLY clause

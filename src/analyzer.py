@@ -23,7 +23,7 @@ class FortranAnalyzer:
 
     def __init__(self, config: FortranProjectConfig):
         self.config = config
-        self.results = {}
+        self.results: Dict[str, Any] = {}
 
         # Initialize components
         self.parser = FortranParser(config)
@@ -136,7 +136,7 @@ class FortranAnalyzer:
         self, dependency_analysis: Dict, translation_stats: Dict, modules: Dict
     ) -> Dict[str, Any]:
         """Generate recommendations based on analysis results."""
-        recommendations = {
+        recommendations: Dict[str, List[str]] = {
             "translation_strategy": [],
             "dependency_issues": [],
             "optimization_opportunities": [],

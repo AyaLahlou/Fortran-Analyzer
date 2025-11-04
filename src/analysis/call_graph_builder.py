@@ -46,6 +46,10 @@ class CallGraphBuilder:
         for module_name, module_info in modules.items():
             for use in module_info.uses:
                 dep_module = use["module"]
+                
+                # Ensure dep_module is a string
+                if not isinstance(dep_module, str):
+                    continue
 
                 # Skip system modules if configured
                 if self._is_system_module(dep_module):
@@ -61,7 +65,7 @@ class CallGraphBuilder:
                     )
                 else:
                     # External dependency
-                    if self.config.track_dependencies:
+                    if self.config.track_dependencies and isinstance(dep_module, str):
                         self.module_graph.add_node(
                             dep_module,
                             external=True,
@@ -203,7 +207,7 @@ class CallGraphBuilder:
 
     def analyze_dependencies(self) -> Dict[str, Any]:
         """Analyze dependency patterns and identify issues."""
-        analysis = {
+        analysis: Dict[str, Any] = {
             "circular_dependencies": [],
             "strongly_connected_components": [],
             "dependency_levels": {},
