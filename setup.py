@@ -54,7 +54,7 @@ setup(
             "types-PyYAML",
         ],
         "fparser": [
-            "fparser2>=2.0",
+            "fparser>=0.2.0",
         ],
         "interactive": [
             "plotly>=5.0",
@@ -62,7 +62,7 @@ setup(
             "ipywidgets",
         ],
         "full": [
-            "fparser2>=2.0",
+            "fparser>=0.2.0",
             "plotly>=5.0",
             "seaborn>=0.11",
         ],

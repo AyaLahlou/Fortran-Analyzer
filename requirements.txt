@@ -5,7 +5,7 @@ matplotlib>=3.3.0
 numpy>=1.20.0
 
 # Optional dependencies (will be available if installed)
-# fparser2>=2.0.0  # For advanced Fortran parsing
+# fparser>=2.0.0  # For advanced Fortran parsing
 # plotly>=5.0.0    # For interactive visualizations
 # seaborn>=0.11.0  # For enhanced statistical plots
 
