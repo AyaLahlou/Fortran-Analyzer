@@ -6,7 +6,7 @@ This module provides a flexible configuration system that can adapt to different
 import yaml
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Union, Any
+from typing import Dict, List, Optional, Union, Any, Tuple
 from dataclasses import dataclass, field
 import logging
 
@@ -58,7 +58,7 @@ class FortranProjectConfig:
     generate_metrics: bool = True
 
     # Visualization settings
-    visualization: Dict[str, Union[str, bool, int, tuple[int, int]]] = field(
+    visualization: Dict[str, Union[str, bool, int, Tuple[int, int]]] = field(
         default_factory=lambda: {
             "node_color": "lightblue",
             "edge_color": "gray",
