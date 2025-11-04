@@ -12,26 +12,26 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from fortran_analyzer import (
-    FortranAnalyzer, 
-    create_analyzer_for_project, 
+    FortranAnalyzer,
+    create_analyzer_for_project,
     quick_analyze,
     ConfigurationManager,
-    create_default_config
+    create_default_config,
 )
 
 
 def create_sample_ctsm_structure(base_path: Path):
     """Create a sample CTSM-like project structure."""
     print("Creating sample CTSM project structure...")
-    
+
     # Create directory structure
     biogeophys_dir = base_path / "src" / "biogeophys"
     biogeochem_dir = base_path / "src" / "biogeochem"
     main_dir = base_path / "src" / "main"
-    
+
     for dir_path in [biogeophys_dir, biogeochem_dir, main_dir]:
         dir_path.mkdir(parents=True, exist_ok=True)
-    
+
     # Create sample biogeophysics module
     biogeophys_content = """
 module CanopyStateType
@@ -76,7 +76,7 @@ contains
 
 end module CanopyStateType
 """
-    
+
     # Create sample biogeochemistry module
     biogeochem_content = """
 module CNPhenologyMod
@@ -120,7 +120,7 @@ contains
 
 end module CNPhenologyMod
 """
-    
+
     # Create main module
     main_content = """
 module clm_driver
@@ -150,22 +150,22 @@ contains
 
 end module clm_driver
 """
-    
+
     # Write files
     (biogeophys_dir / "CanopyStateType.F90").write_text(biogeophys_content)
     (biogeochem_dir / "CNPhenologyMod.F90").write_text(biogeochem_content)
     (main_dir / "clm_driver.F90").write_text(main_content)
-    
+
     print(f"Created sample CTSM project at: {base_path}")
 
 
 def create_sample_scientific_project(base_path: Path):
     """Create a sample scientific computing project."""
     print("Creating sample scientific computing project...")
-    
+
     src_dir = base_path / "src"
     src_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Linear algebra module
     linalg_content = """
 module linear_algebra
@@ -199,7 +199,7 @@ contains
 
 end module linear_algebra
 """
-    
+
     # Numerical methods module
     numerical_content = """
 module numerical_methods
@@ -245,26 +245,26 @@ contains
 
 end module numerical_methods
 """
-    
+
     # Write files
     (src_dir / "linear_algebra.f90").write_text(linalg_content)
     (src_dir / "numerical_methods.f90").write_text(numerical_content)
-    
+
     print(f"Created sample scientific computing project at: {base_path}")
 
 
 def demonstrate_configuration_templates():
     """Demonstrate available configuration templates."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("CONFIGURATION TEMPLATES DEMONSTRATION")
-    print("="*60)
-    
+    print("=" * 60)
+
     manager = ConfigurationManager()
-    
+
     print("Available templates:")
     for template in manager.list_templates():
         print(f"  - {template}")
-    
+
     print("\nTemplate details:")
     for template in manager.list_templates():
         info = manager.get_template_info(template)
@@ -272,39 +272,41 @@ def demonstrate_configuration_templates():
         print(f"  Project type: {info.get('project_name', 'N/A')}")
         print(f"  Source dirs: {info.get('source_dirs', [])}")
         print(f"  Extensions: {info.get('fortran_extensions', [])}")
-        if info.get('system_modules'):
-            print(f"  System modules: {info['system_modules'][:3]}{'...' if len(info['system_modules']) > 3 else ''}")
+        if info.get("system_modules"):
+            print(
+                f"  System modules: {info['system_modules'][:3]}{'...' if len(info['system_modules']) > 3 else ''}"
+            )
 
 
 def demonstrate_ctsm_analysis():
     """Demonstrate analysis of CTSM-like project."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("CTSM PROJECT ANALYSIS DEMONSTRATION")
-    print("="*60)
-    
+    print("=" * 60)
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         project_path = Path(tmp_dir)
         create_sample_ctsm_structure(project_path)
-        
+
         # Create analyzer with CTSM template
         print("\nCreating analyzer with CTSM template...")
         analyzer = create_analyzer_for_project(
             str(project_path),
-            template='ctsm',
-            output_dir='ctsm_demo_output',
-            generate_graphs=False  # Disable for demo
+            template="ctsm",
+            output_dir="ctsm_demo_output",
+            generate_graphs=False,  # Disable for demo
         )
-        
+
         print(f"Project: {analyzer.config.project_name}")
         print(f"Source dirs: {analyzer.config.source_dirs}")
         print(f"System modules: {len(analyzer.config.system_modules)} configured")
-        
+
         # Run analysis
         print("\nRunning analysis...")
         results = analyzer.analyze(save_results=False)
-        
+
         # Display results
-        parsing = results['parsing']
+        parsing = results["parsing"]
         print(f"\nParsing Results:")
         print(f"  Modules found: {len(parsing['modules'])}")
         print(f"  Total files: {parsing['statistics']['total_files']}")
@@ -312,31 +314,31 @@ def demonstrate_ctsm_analysis():
         print(f"  Subroutines: {parsing['statistics']['total_subroutines']}")
         print(f"  Functions: {parsing['statistics']['total_functions']}")
         print(f"  Types: {parsing['statistics']['total_types']}")
-        
+
         # Show modules and their dependencies
         print(f"\nModules and Dependencies:")
-        for module_name, module_info in parsing['modules'].items():
-            uses = [use['module'] for use in module_info.uses]
+        for module_name, module_info in parsing["modules"].items():
+            uses = [use["module"] for use in module_info.uses]
             print(f"  {module_name}: uses {uses}")
-        
+
         # Translation units
-        translation = results['translation']
+        translation = results["translation"]
         print(f"\nTranslation Analysis:")
         print(f"  Translation units: {translation['units']}")
-        
-        t_stats = translation['statistics']
-        if 'units_by_effort' in t_stats:
-            effort_stats = t_stats['units_by_effort']
+
+        t_stats = translation["statistics"]
+        if "units_by_effort" in t_stats:
+            effort_stats = t_stats["units_by_effort"]
             print(f"  Low effort: {effort_stats.get('low', 0)}")
             print(f"  Medium effort: {effort_stats.get('medium', 0)}")
             print(f"  High effort: {effort_stats.get('high', 0)}")
-        
+
         # Translation order
         order = analyzer.get_translation_order()
         print(f"\nRecommended translation order: {order}")
-        
+
         # Recommendations
-        recommendations = results['recommendations']
+        recommendations = results["recommendations"]
         print(f"\nRecommendations:")
         for category, items in recommendations.items():
             if items:
@@ -347,50 +349,50 @@ def demonstrate_ctsm_analysis():
 
 def demonstrate_scientific_analysis():
     """Demonstrate analysis of scientific computing project."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("SCIENTIFIC COMPUTING PROJECT ANALYSIS")
-    print("="*60)
-    
+    print("=" * 60)
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         project_path = Path(tmp_dir)
         create_sample_scientific_project(project_path)
-        
+
         # Quick analysis
         print("\nRunning quick analysis...")
-        results = quick_analyze(
-            str(project_path),
-            template='scientific_computing'
-        )
-        
+        results = quick_analyze(str(project_path), template="scientific_computing")
+
         # Display results
-        parsing = results['parsing']
+        parsing = results["parsing"]
         print(f"\nResults:")
         print(f"  Modules: {len(parsing['modules'])}")
         print(f"  Files: {parsing['statistics']['total_files']}")
         print(f"  Lines: {parsing['statistics']['total_lines']}")
-        
+
         # Show dependency structure
-        dependencies = results['dependencies']
+        dependencies = results["dependencies"]
         print(f"\nDependency Analysis:")
         print(f"  Module dependencies: {dependencies['module_graph_summary']['edges']}")
-        
-        if dependencies['analysis']['external_dependencies']:
-            print(f"  External deps: {dependencies['analysis']['external_dependencies']}")
+
+        if dependencies["analysis"]["external_dependencies"]:
+            print(
+                f"  External deps: {dependencies['analysis']['external_dependencies']}"
+            )
 
 
 def demonstrate_custom_configuration():
     """Demonstrate custom configuration creation."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("CUSTOM CONFIGURATION DEMONSTRATION")
-    print("="*60)
-    
+    print("=" * 60)
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         project_path = Path(tmp_dir)
         src_dir = project_path / "lib"
         src_dir.mkdir()
-        
+
         # Create a simple module
-        (src_dir / "custom.f90").write_text("""
+        (src_dir / "custom.f90").write_text(
+            """
 module custom_module
   implicit none
 contains
@@ -398,11 +400,12 @@ contains
     print *, "Custom procedure"
   end subroutine
 end module
-""")
-        
+"""
+        )
+
         # Create custom configuration
         from fortran_analyzer.config.project_config import FortranProjectConfig
-        
+
         config = FortranProjectConfig(
             project_name="Custom Fortran Project",
             project_root=str(project_path),
@@ -411,83 +414,83 @@ end module
             max_translation_unit_lines=60,  # Smaller units
             fortran_standard="f2008",
             external_libraries=["custom_lib"],
-            generate_graphs=False
+            generate_graphs=False,
         )
-        
+
         print("Custom configuration created:")
         print(f"  Project: {config.project_name}")
         print(f"  Source dirs: {config.source_dirs}")
         print(f"  Max unit lines: {config.max_translation_unit_lines}")
         print(f"  Fortran standard: {config.fortran_standard}")
-        
+
         # Analyze with custom config
         analyzer = FortranAnalyzer(config)
         results = analyzer.analyze(save_results=False)
-        
+
         print(f"\nAnalysis with custom config:")
         print(f"  Found {len(results['parsing']['modules'])} modules")
 
 
 def demonstrate_comparison():
     """Demonstrate comparing different project configurations."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("PROJECT COMPARISON DEMONSTRATION")
-    print("="*60)
-    
-    templates = ['generic', 'scientific_computing', 'numerical_library']
-    
+    print("=" * 60)
+
+    templates = ["generic", "scientific_computing", "numerical_library"]
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         project_path = Path(tmp_dir)
         create_sample_scientific_project(project_path)
-        
+
         print("Analyzing same project with different templates:\n")
-        
+
         for template in templates:
             print(f"Template: {template}")
-            
+
             config = create_default_config(str(project_path), template)
             print(f"  Max unit lines: {config.max_translation_unit_lines}")
             print(f"  System modules: {len(config.system_modules)}")
             print(f"  External libs: {len(config.external_libraries)}")
-            
+
             # Quick analysis
             try:
                 results = quick_analyze(str(project_path), template=template)
-                t_stats = results['translation']['statistics']
+                t_stats = results["translation"]["statistics"]
                 print(f"  Translation units: {t_stats.get('total_units', 0)}")
             except Exception as e:
                 print(f"  Analysis failed: {e}")
-            
+
             print()
 
 
 def main():
     """Main demonstration function."""
     print("FORTRAN ANALYZER - REFACTORED FRAMEWORK DEMONSTRATION")
-    print("="*70)
+    print("=" * 70)
     print("This demonstrates the refactored Fortran Analyzer that works")
     print("with any Fortran codebase, not just CLM/CTSM.")
-    print("="*70)
-    
+    print("=" * 70)
+
     try:
         # Demonstrate configuration templates
         demonstrate_configuration_templates()
-        
+
         # Demonstrate CTSM analysis
         demonstrate_ctsm_analysis()
-        
+
         # Demonstrate scientific computing analysis
         demonstrate_scientific_analysis()
-        
+
         # Demonstrate custom configuration
         demonstrate_custom_configuration()
-        
+
         # Demonstrate comparison
         demonstrate_comparison()
-        
-        print("\n" + "="*70)
+
+        print("\n" + "=" * 70)
         print("DEMONSTRATION COMPLETE")
-        print("="*70)
+        print("=" * 70)
         print("Key improvements in the refactored framework:")
         print("  ✓ Generic Fortran parser (works with any codebase)")
         print("  ✓ Configurable templates for different project types")
@@ -497,17 +500,18 @@ def main():
         print("  ✓ Command-line interface and Python API")
         print("  ✓ Extensive documentation and examples")
         print("  ✓ Unit tests for validation")
-        
+
         print("\nTo use with your own projects:")
         print("  1. Choose appropriate template or create custom config")
         print("  2. Run: fortran-analyzer analyze /path/to/project")
         print("  3. Review generated analysis results and visualizations")
-        
+
     except KeyboardInterrupt:
         print("\nDemonstration interrupted by user")
     except Exception as e:
         print(f"\nDemonstration failed: {e}")
         import traceback
+
         traceback.print_exc()
 
 

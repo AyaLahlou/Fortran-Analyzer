@@ -12,9 +12,9 @@ from .analyzer import FortranAnalyzer, create_analyzer_for_project, quick_analyz
 from .config.project_config import FortranProjectConfig, ConfigurationManager
 
 __all__ = [
-    'FortranAnalyzer',
-    'FortranProjectConfig', 
-    'ConfigurationManager',
-    'create_analyzer_for_project',
-    'quick_analyze'
+    "FortranAnalyzer",
+    "FortranProjectConfig",
+    "ConfigurationManager",
+    "create_analyzer_for_project",
+    "quick_analyze",
 ]

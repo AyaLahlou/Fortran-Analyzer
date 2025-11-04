@@ -11,8 +11,10 @@ long_description = readme_file.read_text() if readme_file.exists() else ""
 requirements_file = Path(__file__).parent / "requirements.txt"
 requirements = []
 if requirements_file.exists():
-    requirements = requirements_file.read_text().strip().split('\n')
-    requirements = [req.strip() for req in requirements if req.strip() and not req.startswith('#')]
+    requirements = requirements_file.read_text().strip().split("\n")
+    requirements = [
+        req.strip() for req in requirements if req.strip() and not req.startswith("#")
+    ]
 
 setup(
     name="fortran-analyzer",
