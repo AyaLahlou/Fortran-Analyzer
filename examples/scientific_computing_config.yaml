@@ -1,0 +1,60 @@
+# Example configuration for scientific computing project
+project_name: "Scientific Computing Project"
+project_root: "/path/to/project"
+
+# Source directories
+source_dirs:
+  - "src"
+  - "modules"
+
+# File patterns
+include_patterns:
+  - "**/*.f90"
+  - "**/*.F90"
+  - "**/*.f95"
+
+exclude_patterns:
+  - "**/test_*"
+  - "**/example_*"
+
+# Fortran settings
+fortran_extensions: [".f90", ".F90", ".f95"]
+fortran_standard: "f2008"
+case_sensitive: false
+
+# Translation settings
+max_translation_unit_lines: 100
+min_chunk_lines: 30
+preserve_interfaces: true
+
+# Analysis
+track_dependencies: true
+
+# System modules
+system_modules:
+  - "iso_fortran_env"
+  - "iso_c_binding"
+  - "ieee_arithmetic"
+  - "ieee_exceptions"
+
+# External libraries common in scientific computing
+external_libraries:
+  - "lapack"
+  - "blas"
+  - "mpi"
+  - "hdf5"
+  - "netcdf"
+  - "fftw"
+
+# Output
+output_dir: "analysis_output"
+generate_graphs: true
+generate_metrics: true
+
+# Visualization
+visualization:
+  node_color: "lightgreen"
+  edge_color: "darkgray"
+  font_size: 9
+  figure_size: [12, 8]
+  show_labels: true

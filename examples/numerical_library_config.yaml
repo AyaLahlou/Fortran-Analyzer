@@ -1,0 +1,63 @@
+# Example configuration for numerical library
+project_name: "Numerical Library"
+project_root: "/path/to/library"
+
+# Source structure typical of libraries
+source_dirs:
+  - "src"
+  - "lib"
+  - "include"
+
+include_patterns:
+  - "src/**/*.f90"
+  - "lib/**/*.F90"
+  - "include/**/*.f95"
+
+exclude_patterns:
+  - "**/examples/**"
+  - "**/tests/**"
+  - "**/benchmarks/**"
+
+# Fortran settings for library code
+fortran_extensions: [".f90", ".F90", ".f95", ".F95"]
+fortran_standard: "f2008"
+case_sensitive: true
+
+# Smaller translation units for library functions
+max_translation_unit_lines: 80
+min_chunk_lines: 20
+preserve_interfaces: true
+
+# Important for libraries
+track_dependencies: true
+
+# Standard modules
+system_modules:
+  - "iso_fortran_env"
+  - "iso_c_binding"
+  - "ieee_arithmetic"
+
+# Common dependencies for numerical libraries
+external_libraries:
+  - "lapack"
+  - "blas"
+  - "cblas"
+  - "lapacke"
+
+# Library-specific naming
+naming_conventions:
+  prefix: "lib_"
+  public_suffix: "_api"
+  private_suffix: "_impl"
+
+# Output
+output_dir: "library_analysis"
+generate_graphs: true
+generate_metrics: true
+
+visualization:
+  node_color: "orange"
+  edge_color: "black"
+  font_size: 8
+  figure_size: [10, 8]
+  show_labels: true

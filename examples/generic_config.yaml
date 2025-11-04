@@ -1,0 +1,48 @@
+# Generic configuration template
+project_name: "Generic Fortran Project"
+project_root: "/path/to/project"
+
+# Basic source directory
+source_dirs:
+  - "src"
+
+# Standard patterns
+include_patterns:
+  - "**/*.f90"
+  - "**/*.F90"
+
+exclude_patterns: []
+exclude_dirs: []
+
+# Basic Fortran settings
+fortran_extensions: [".f90", ".F90"]
+fortran_standard: "f2003"
+case_sensitive: false
+
+# Default translation settings
+max_translation_unit_lines: 150
+min_chunk_lines: 50
+preserve_interfaces: true
+
+# Basic analysis
+track_dependencies: true
+
+# Minimal system modules
+system_modules:
+  - "iso_fortran_env"
+
+# No external libraries assumed
+external_libraries: []
+
+# Basic output
+output_dir: "output"
+generate_graphs: true
+generate_metrics: true
+
+# Default visualization
+visualization:
+  node_color: "lightblue"
+  edge_color: "gray"
+  font_size: 10
+  figure_size: [12, 8]
+  show_labels: true
