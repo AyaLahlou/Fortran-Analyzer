@@ -249,7 +249,7 @@ end module
         )
 
         assert analyzer.config.project_name == "Factory Test"
-        assert analyzer.config.project_root == str(self.project_root)
+        assert analyzer.config.project_root == str(Path(self.project_root).resolve())
 
     def test_quick_analyze(self):
         """Test quick analysis function."""

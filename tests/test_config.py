@@ -24,7 +24,7 @@ class TestFortranProjectConfig:
         )
 
         assert config.project_name == "Test Project"
-        assert config.project_root == "/tmp/test"
+        assert config.project_root == str(Path("/tmp/test").resolve())
         assert config.fortran_extensions == [".f90", ".F90", ".f", ".F", ".f95", ".F95"]
         assert config.max_translation_unit_lines == 150
 
@@ -103,7 +103,7 @@ class TestConfigurationManager:
             )
 
             assert config.project_name == "Override Test"
-            assert config.project_root == tmp_dir
+            assert config.project_root == str(Path(tmp_dir).resolve())
             assert any(Path(d).name == "src" for d in config.source_dirs)
 
     def test_auto_detect_generic(self):
@@ -140,7 +140,7 @@ class TestConfigUtilities:
             config = create_default_config(tmp_dir, "generic")
 
             assert config.project_name == "Generic Fortran Project"
-            assert config.project_root == tmp_dir
+            assert config.project_root == str(Path(tmp_dir).resolve())
             assert config.fortran_standard == "f2003"
 
     def test_create_default_config_auto(self):
@@ -153,7 +153,7 @@ class TestConfigUtilities:
             config = create_default_config(tmp_dir, "auto")
 
             assert config.project_name == "Generic Fortran Project"
-            assert config.project_root == tmp_dir
+            assert config.project_root == str(Path(tmp_dir).resolve())
 
 
 class TestConfigurationEdgeCases:
