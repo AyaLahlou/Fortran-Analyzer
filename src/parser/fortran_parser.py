@@ -12,6 +12,7 @@ import logging
 
 try:
     import yaml
+
     YAML_AVAILABLE = True
 except ImportError:
     YAML_AVAILABLE = False
@@ -371,7 +372,9 @@ class FortranParser:
 
         return start_line, end_line
 
-    def _extract_use_stmt(self, use_node) -> Optional[Dict[str, Union[str, List[str], None]]]:
+    def _extract_use_stmt(
+        self, use_node
+    ) -> Optional[Dict[str, Union[str, List[str], None]]]:
         """Extract information from a USE statement."""
         try:
             module_name = str(use_node.children[1])

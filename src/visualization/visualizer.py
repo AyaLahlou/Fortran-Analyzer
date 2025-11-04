@@ -177,7 +177,7 @@ class FortranVisualizer:
         for unit in translation_units:
             unit_types[unit.unit_type] = unit_types.get(unit.unit_type, 0) + 1
 
-        colors = plt.cm.get_cmap('tab20')(np.linspace(0, 1, len(unit_types)))
+        colors = plt.cm.get_cmap("tab20")(np.linspace(0, 1, len(unit_types)))
         wedges, texts, autotexts = ax1.pie(
             unit_types.values(),
             labels=unit_types.keys(),

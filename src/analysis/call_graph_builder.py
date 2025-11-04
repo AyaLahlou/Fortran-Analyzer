@@ -46,7 +46,7 @@ class CallGraphBuilder:
         for module_name, module_info in modules.items():
             for use in module_info.uses:
                 dep_module = use["module"]
-                
+
                 # Ensure dep_module is a string
                 if not isinstance(dep_module, str):
                     continue
