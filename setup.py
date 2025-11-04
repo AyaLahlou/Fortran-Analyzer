@@ -51,6 +51,7 @@ setup(
             "black",
             "flake8",
             "mypy",
+            "types-PyYAML",
         ],
         "fparser": [
             "fparser2>=2.0",
