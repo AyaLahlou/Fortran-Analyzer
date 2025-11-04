@@ -1,0 +1,31 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "file_path": "/local/tmp1hik936m/src/main.f90",
+      "line_count": 9,
+      "subroutines": 1,
+      "functions": 0,
+      "types": 0,
+      "id": "main_module"
+    },
+    {
+      "file_path": "/local/tmp1hik936m/src/utils.f90",
+      "line_count": 8,
+      "subroutines": 1,
+      "functions": 0,
+      "types": 0,
+      "id": "utils_module"
+    }
+  ],
+  "links": [
+    {
+      "dependency_type": "use",
+      "only_items": null,
+      "source": "main_module",
+      "target": "utils_module"
+    }
+  ]
+}

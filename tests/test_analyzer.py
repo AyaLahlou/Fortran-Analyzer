@@ -296,10 +296,8 @@ class TestAnalyzerEdgeCases:
             source_dirs=["src"],
         )
 
-        analyzer = FortranAnalyzer(config)
-
         with pytest.raises(ValueError):
-            analyzer.analyze()
+            analyzer = FortranAnalyzer(config)
 
     def test_single_file_project(self):
         """Test analysis of single file project."""

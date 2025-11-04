@@ -9,11 +9,11 @@ from typing import Dict, Any, Optional, List, Union
 import json
 import time
 
-from config.project_config import FortranProjectConfig, ConfigurationManager
-from parser.fortran_parser import FortranParser
-from analysis.call_graph_builder import CallGraphBuilder
-from analysis.translation_decomposer import TranslationUnitDecomposer
-from visualization.visualizer import FortranVisualizer
+from .config.project_config import FortranProjectConfig, ConfigurationManager
+from .parser.fortran_parser import FortranParser
+from .analysis.call_graph_builder import CallGraphBuilder
+from .analysis.translation_decomposer import TranslationUnitDecomposer
+from .visualization.visualizer import FortranVisualizer
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +24,12 @@ class FortranAnalyzer:
     def __init__(self, config: FortranProjectConfig):
         self.config = config
         self.results: Dict[str, Any] = {}
+
+        # Validate configuration first
+        if not config.validate():
+            raise ValueError(
+                f"Invalid configuration: {config.project_root} does not exist or is not accessible"
+            )
 
         # Initialize components
         self.parser = FortranParser(config)
@@ -43,10 +49,6 @@ class FortranAnalyzer:
         start_time = time.time()
 
         try:
-            # Validate configuration
-            if not self.config.validate():
-                raise ValueError("Invalid configuration")
-
             # Step 1: Parse the codebase
             logger.info("Step 1: Parsing Fortran source files")
             parsing_results = self.parser.parse_project()
@@ -54,7 +56,49 @@ class FortranAnalyzer:
 
             if not modules:
                 logger.warning("No modules found in the codebase")
-                return {}
+                # Return proper structure even for empty projects
+                return {
+                    "config": {
+                        "project_name": self.config.project_name,
+                        "project_root": self.config.project_root,
+                        "source_dirs": self.config.source_dirs,
+                        "analysis_timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    },
+                    "parsing": {
+                        "modules": {},
+                        "statistics": {
+                            "total_files": 0,
+                            "total_modules": 0,
+                            "total_subroutines": 0,
+                            "total_functions": 0,
+                            "total_types": 0,
+                            "lines_of_code": 0,
+                        },
+                    },
+                    "dependencies": {
+                        "module_graph_summary": {"nodes": 0, "edges": 0},
+                        "analysis": {
+                            "external_dependencies": [],
+                            "hub_modules": [],
+                            "leaf_modules": [],
+                            "dependency_chains": [],
+                        },
+                    },
+                    "translation": {
+                        "units": 0,
+                        "statistics": {
+                            "total_units": 0,
+                            "units_by_type": {},
+                            "average_unit_size": 0,
+                        },
+                    },
+                    "recommendations": {
+                        "translation_strategy": "No modules found for translation",
+                        "dependency_issues": [],
+                        "optimization_opportunities": [],
+                        "risks": [],
+                    },
+                }
 
             # Step 2: Build call graphs and dependency analysis
             logger.info("Step 2: Building call graphs and analyzing dependencies")
@@ -381,12 +425,16 @@ def create_analyzer_for_project(
 ) -> FortranAnalyzer:
     """Create analyzer for a project using template."""
     from .config.project_config import create_default_config
+    from pathlib import Path
 
     config = create_default_config(project_root, template)
 
     # Apply any overrides
     for key, value in config_overrides.items():
         if hasattr(config, key):
+            # Handle relative paths for output_dir
+            if key == "output_dir" and not Path(value).is_absolute():
+                value = str(Path(project_root) / value)
             setattr(config, key, value)
 
     return FortranAnalyzer(config)

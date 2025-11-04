@@ -1,0 +1,202 @@
+{
+  "config": {
+    "project_name": "Scientific Computing Project",
+    "project_root": "/local/tmp1hik936m",
+    "analysis_timestamp": 1762294929.1912441,
+    "analysis_duration": 0.003239870071411133
+  },
+  "parsing": {
+    "modules": {
+      "main_module": {
+        "name": "main_module",
+        "file_path": "/local/tmp1hik936m/src/main.f90",
+        "uses": [
+          {
+            "module": "utils_module",
+            "only": null
+          }
+        ],
+        "subroutines": [
+          "main_program"
+        ],
+        "functions": [],
+        "types": [],
+        "variables": [],
+        "interfaces": [],
+        "line_count": 9,
+        "entities": [
+          {
+            "name": "main_program",
+            "entity_type": "subroutine",
+            "file_path": "/local/tmp1hik936m/src/main.f90",
+            "line_start": 6,
+            "line_end": 8,
+            "parent": "main_module",
+            "attributes": {}
+          }
+        ]
+      },
+      "utils_module": {
+        "name": "utils_module",
+        "file_path": "/local/tmp1hik936m/src/utils.f90",
+        "uses": [],
+        "subroutines": [
+          "utility_function"
+        ],
+        "functions": [],
+        "types": [],
+        "variables": [],
+        "interfaces": [],
+        "line_count": 8,
+        "entities": [
+          {
+            "name": "utility_function",
+            "entity_type": "subroutine",
+            "file_path": "/local/tmp1hik936m/src/utils.f90",
+            "line_start": 5,
+            "line_end": 7,
+            "parent": "utils_module",
+            "attributes": {}
+          }
+        ]
+      }
+    },
+    "files": {
+      "/local/tmp1hik936m/src/main.f90": {
+        "module_name": "main_module",
+        "line_count": 9,
+        "subroutines": 1,
+        "functions": 0,
+        "types": 0
+      },
+      "/local/tmp1hik936m/src/utils.f90": {
+        "module_name": "utils_module",
+        "line_count": 8,
+        "subroutines": 1,
+        "functions": 0,
+        "types": 0
+      }
+    },
+    "dependencies": {
+      "main_module": [
+        "utils_module"
+      ],
+      "utils_module": []
+    },
+    "call_graph": {},
+    "entities": [
+      {
+        "name": "main_program",
+        "entity_type": "subroutine",
+        "file_path": "/local/tmp1hik936m/src/main.f90",
+        "line_start": 6,
+        "line_end": 8,
+        "parent": "main_module",
+        "attributes": {}
+      },
+      {
+        "name": "utility_function",
+        "entity_type": "subroutine",
+        "file_path": "/local/tmp1hik936m/src/utils.f90",
+        "line_start": 5,
+        "line_end": 7,
+        "parent": "utils_module",
+        "attributes": {}
+      }
+    ],
+    "statistics": {
+      "total_files": 2,
+      "total_lines": 17,
+      "total_subroutines": 2,
+      "total_functions": 0,
+      "total_types": 0,
+      "total_entities": 2,
+      "average_lines_per_file": 8.5,
+      "average_subroutines_per_module": 1.0
+    }
+  },
+  "dependencies": {
+    "module_graph_summary": {
+      "nodes": 2,
+      "edges": 1
+    },
+    "entity_graph_summary": {
+      "nodes": 2,
+      "edges": 1
+    },
+    "analysis": {
+      "circular_dependencies": [],
+      "strongly_connected_components": [],
+      "dependency_levels": {
+        "main_module": 0,
+        "utils_module": 1
+      },
+      "external_dependencies": [],
+      "orphaned_modules": [],
+      "hub_modules": [],
+      "leaf_modules": [
+        "utils_module"
+      ]
+    },
+    "metrics": {
+      "module_graph": {
+        "nodes": 2,
+        "edges": 1,
+        "density": 0.5,
+        "average_degree": 1.0,
+        "is_connected": true,
+        "is_dag": true,
+        "in_degree_centrality": {
+          "main_module": 0.0,
+          "utils_module": 1.0
+        },
+        "out_degree_centrality": {
+          "main_module": 1.0,
+          "utils_module": 0.0
+        },
+        "betweenness_centrality": {
+          "main_module": 0.0,
+          "utils_module": 0.0
+        }
+      },
+      "entity_graph": {
+        "nodes": 2,
+        "edges": 1,
+        "density": 0.5,
+        "is_connected": true
+      }
+    }
+  },
+  "translation": {
+    "units": 4,
+    "statistics": {
+      "total_units": 4,
+      "units_by_type": {
+        "module": 2,
+        "root": 2
+      },
+      "units_by_priority": {
+        "1": 2,
+        "4": 2
+      },
+      "units_by_effort": {
+        "low": 4
+      },
+      "average_lines_per_unit": 3.25,
+      "total_lines": 13,
+      "largest_unit": "main_module_module_001",
+      "most_complex_unit": "main_module_module_001"
+    },
+    "translation_order": [
+      "utils_module",
+      "main_module"
+    ]
+  },
+  "visualizations": {},
+  "recommendations": {
+    "translation_strategy": [],
+    "dependency_issues": [],
+    "optimization_opportunities": [],
+    "risks": []
+  }
+}

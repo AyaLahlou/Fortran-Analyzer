@@ -1,0 +1,110 @@
+{
+  "translation_units": [
+    {
+      "id": "main_module_module_001",
+      "unit_type": "module",
+      "entity_name": "main_module",
+      "entity_type": "module",
+      "module_name": "main_module",
+      "file_path": "/local/tmp1hik936m/src/main.f90",
+      "line_start": 2,
+      "line_end": 5,
+      "line_count": 4,
+      "parent_id": null,
+      "child_ids": [],
+      "depends_on": [],
+      "used_by": [],
+      "has_interfaces": false,
+      "has_types": false,
+      "complexity_score": 0.4,
+      "priority": 1,
+      "estimated_effort": "low",
+      "notes": []
+    },
+    {
+      "id": "main_module_subroutine_main_program_002",
+      "unit_type": "root",
+      "entity_name": "main_program",
+      "entity_type": "subroutine",
+      "module_name": "main_module",
+      "file_path": "/local/tmp1hik936m/src/main.f90",
+      "line_start": 6,
+      "line_end": 8,
+      "line_count": 3,
+      "parent_id": null,
+      "child_ids": [],
+      "depends_on": [],
+      "used_by": [],
+      "has_interfaces": false,
+      "has_types": false,
+      "complexity_score": 0.36000000000000004,
+      "priority": 4,
+      "estimated_effort": "low",
+      "notes": []
+    },
+    {
+      "id": "utils_module_module_003",
+      "unit_type": "module",
+      "entity_name": "utils_module",
+      "entity_type": "module",
+      "module_name": "utils_module",
+      "file_path": "/local/tmp1hik936m/src/utils.f90",
+      "line_start": 2,
+      "line_end": 4,
+      "line_count": 3,
+      "parent_id": null,
+      "child_ids": [],
+      "depends_on": [],
+      "used_by": [],
+      "has_interfaces": false,
+      "has_types": false,
+      "complexity_score": 0.30000000000000004,
+      "priority": 1,
+      "estimated_effort": "low",
+      "notes": []
+    },
+    {
+      "id": "utils_module_subroutine_utility_function_004",
+      "unit_type": "root",
+      "entity_name": "utility_function",
+      "entity_type": "subroutine",
+      "module_name": "utils_module",
+      "file_path": "/local/tmp1hik936m/src/utils.f90",
+      "line_start": 5,
+      "line_end": 7,
+      "line_count": 3,
+      "parent_id": null,
+      "child_ids": [],
+      "depends_on": [],
+      "used_by": [],
+      "has_interfaces": false,
+      "has_types": false,
+      "complexity_score": 0.36000000000000004,
+      "priority": 4,
+      "estimated_effort": "low",
+      "notes": []
+    }
+  ],
+  "statistics": {
+    "total_units": 4,
+    "units_by_type": {
+      "module": 2,
+      "root": 2
+    },
+    "units_by_priority": {
+      "1": 2,
+      "4": 2
+    },
+    "units_by_effort": {
+      "low": 4
+    },
+    "average_lines_per_unit": 3.25,
+    "total_lines": 13,
+    "largest_unit": "main_module_module_001",
+    "most_complex_unit": "main_module_module_001"
+  },
+  "config": {
+    "max_translation_unit_lines": 150,
+    "min_chunk_lines": 50
+  }
+}

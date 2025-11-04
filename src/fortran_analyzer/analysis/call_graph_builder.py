@@ -363,8 +363,8 @@ class CallGraphBuilder:
         internal_graph = self.module_graph.subgraph(internal_nodes)
 
         if nx.is_directed_acyclic_graph(internal_graph):
-            # Use topological sort for DAG
-            return list(nx.topological_sort(internal_graph))
+            # Use topological sort for DAG - reverse to get dependencies first
+            return list(reversed(list(nx.topological_sort(internal_graph))))
         else:
             # For graphs with cycles, use a heuristic approach
             # Start with nodes that have no incoming edges

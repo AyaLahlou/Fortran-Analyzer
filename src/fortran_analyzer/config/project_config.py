@@ -85,6 +85,13 @@ class FortranProjectConfig:
         """Load configuration from a YAML file."""
         with open(yaml_path, "r") as f:
             data = yaml.safe_load(f)
+
+        # Convert lists back to tuples where expected (e.g., figure_size)
+        if "visualization" in data and isinstance(data["visualization"], dict):
+            viz = data["visualization"]
+            if "figure_size" in viz and isinstance(viz["figure_size"], list):
+                viz["figure_size"] = tuple(viz["figure_size"])
+
         return cls(**data)
 
     @classmethod
@@ -96,7 +103,19 @@ class FortranProjectConfig:
 
     def to_yaml(self, yaml_path: Union[str, Path]) -> None:
         """Save configuration to a YAML file."""
-        data = self.__dict__.copy()
+
+        def convert_tuples(obj):
+            """Convert tuples to lists for YAML serialization."""
+            if isinstance(obj, dict):
+                return {k: convert_tuples(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_tuples(item) for item in obj]
+            elif isinstance(obj, tuple):
+                return list(obj)
+            else:
+                return obj
+
+        data = convert_tuples(self.__dict__.copy())
         with open(yaml_path, "w") as f:
             yaml.dump(data, f, default_flow_style=False, indent=2)
 

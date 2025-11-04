@@ -1,0 +1,34 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "name": "main_program",
+      "entity_type": "subroutine",
+      "module": "main_module",
+      "file_path": "/local/tmp1hik936m/src/main.f90",
+      "line_start": 6,
+      "line_end": 8,
+      "line_count": 3,
+      "id": "main_module::main_program"
+    },
+    {
+      "name": "utility_function",
+      "entity_type": "subroutine",
+      "module": "utils_module",
+      "file_path": "/local/tmp1hik936m/src/utils.f90",
+      "line_start": 5,
+      "line_end": 7,
+      "line_count": 3,
+      "id": "utils_module::utility_function"
+    }
+  ],
+  "links": [
+    {
+      "call_type": "procedure_call",
+      "source": "main_module::main_program",
+      "target": "utils_module::utility_function"
+    }
+  ]
+}

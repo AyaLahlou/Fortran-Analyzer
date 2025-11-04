@@ -1,0 +1,28 @@
+Fortran Codebase Analysis Report
+========================================
+
+Project: Scientific Computing Project
+Analysis Date: Tue Nov  4 17:22:09 2025
+Duration: 0.00 seconds
+
+Parsing Summary:
+  Total Files: 2
+  Total Lines: 17
+  Modules: 2
+  Subroutines: 2
+  Functions: 0
+  Types: 0
+
+Translation Analysis:
+  Translation Units: 4
+  Low Effort Units: 4
+  Medium Effort Units: 0
+  High Effort Units: 0
+
+Dependency Analysis:
+  Module Dependencies: 1
+  Circular Dependencies: 0
+  External Dependencies: 0
+  Hub Modules: 0
+
+Recommendations:

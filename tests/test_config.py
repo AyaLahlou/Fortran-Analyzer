@@ -104,7 +104,7 @@ class TestConfigurationManager:
 
             assert config.project_name == "Override Test"
             assert config.project_root == tmp_dir
-            assert "src" in config.source_dirs
+            assert any(Path(d).name == "src" for d in config.source_dirs)
 
     def test_auto_detect_generic(self):
         """Test auto-detection for generic project."""
@@ -221,8 +221,8 @@ external_libraries:
 
         assert config.project_name == "Test YAML Project"
         assert config.max_translation_unit_lines == 120
-        assert "src" in config.source_dirs
-        assert "lib" in config.source_dirs
+        assert any(Path(d).name == "src" for d in config.source_dirs)
+        assert any(Path(d).name == "lib" for d in config.source_dirs)
         assert "iso_fortran_env" in config.system_modules
         assert "netcdf" in config.external_libraries
 
