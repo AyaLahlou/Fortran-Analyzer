@@ -168,8 +168,16 @@ class ConfigurationManager:
     TEMPLATES: Dict[str, Dict[str, Any]] = {
         "ctsm": {
             "project_name": "CTSM",
-            "source_dirs": ["src/biogeophys", "src/biogeochem", "src/main"],
-            "fortran_extensions": [".F90"],
+            "source_dirs": [
+                "clm_src_biogeophys", 
+                "clm_src_main", 
+                "clm_src_utils", 
+                "clm_src_cpl",
+                "cime_src_share_util",
+                "multilayer_canopy",
+                "offline_driver"
+            ],
+            "fortran_extensions": [".F90", ".f90"],
             "system_modules": [
                 "shr_kind_mod",
                 "clm_varpar",

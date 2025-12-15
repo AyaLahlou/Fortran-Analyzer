@@ -21,37 +21,37 @@ def fix_imports():
 
     # Load config module
     config_spec = importlib.util.spec_from_file_location(
-        "project_config", src_dir / "config" / "project_config.py"
+        "project_config", src_dir / "fortran_analyzer" / "config" / "project_config.py"
     )
     config_module = importlib.util.module_from_spec(config_spec)
     config_spec.loader.exec_module(config_module)
 
     # Load parser module
     parser_spec = importlib.util.spec_from_file_location(
-        "fortran_parser", src_dir / "parser" / "fortran_parser.py"
+        "fortran_parser", src_dir / "fortran_analyzer" / "parser" / "fortran_parser.py"
     )
     parser_module = importlib.util.module_from_spec(parser_spec)
 
     # Inject the config module to avoid import error
-    sys.modules["config.project_config"] = config_module
+    sys.modules["fortran_analyzer.config.project_config"] = config_module
     parser_spec.loader.exec_module(parser_module)
 
     # Load analysis modules
     call_graph_spec = importlib.util.spec_from_file_location(
-        "call_graph_builder", src_dir / "analysis" / "call_graph_builder.py"
+        "call_graph_builder", src_dir / "fortran_analyzer" / "analysis" / "call_graph_builder.py"
     )
     call_graph_module = importlib.util.module_from_spec(call_graph_spec)
     call_graph_spec.loader.exec_module(call_graph_module)
 
     decomposer_spec = importlib.util.spec_from_file_location(
-        "translation_decomposer", src_dir / "analysis" / "translation_decomposer.py"
+        "translation_decomposer", src_dir / "fortran_analyzer" / "analysis" / "translation_decomposer.py"
     )
     decomposer_module = importlib.util.module_from_spec(decomposer_spec)
     decomposer_spec.loader.exec_module(decomposer_module)
 
-    # Load visualization module
+    # Load visualizer module
     viz_spec = importlib.util.spec_from_file_location(
-        "visualizer", src_dir / "visualization" / "visualizer.py"
+        "visualizer", src_dir / "fortran_analyzer" / "visualization" / "visualizer.py"
     )
     viz_module = importlib.util.module_from_spec(viz_spec)
     viz_spec.loader.exec_module(viz_module)
